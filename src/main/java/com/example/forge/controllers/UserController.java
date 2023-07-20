@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.forge.entities.User;
+import com.example.forge.models.entities.User;
 
 import jakarta.validation.Valid;
 

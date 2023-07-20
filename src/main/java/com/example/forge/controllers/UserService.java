@@ -3,7 +3,7 @@ package com.example.forge.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.forge.entities.User;
+import com.example.forge.models.entities.User;
 
 public interface UserService {
   List<User> findAll();
