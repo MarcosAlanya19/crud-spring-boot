@@ -1,6 +1,7 @@
 package com.example.forge.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,7 +32,11 @@ public class SpringSecurityConfig {
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.authorizeHttpRequests(authRules -> authRules
       .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-      // .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+      .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyRole("USER", "ADMIN")
+      .requestMatchers("/api/users/**").hasRole("ADMIN")
+      // .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
+      // .requestMatchers(HttpMethod.DELETE, "api/users/{id}").hasRole("ADMIN")
+      // .requestMatchers(HttpMethod.PUT, "api/users/{id}").hasRole("ADMIN")
       .anyRequest().authenticated())
       .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
       .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()))

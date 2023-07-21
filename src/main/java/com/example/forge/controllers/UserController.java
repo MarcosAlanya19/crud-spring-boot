@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.forge.models.dto.UserDto;
 import com.example.forge.models.entities.User;
+import com.example.forge.models.request.UserRequest;
 
 import jakarta.validation.Valid;
 
@@ -39,15 +41,15 @@ public class UserController {
   }
 
   @GetMapping
-  public List<User> list() {
+  public List<UserDto> list() {
     return service.findAll();
   }
 
   @GetMapping("{id}")
   public ResponseEntity<?> show(@PathVariable Long id) {
-    Optional<User> userOptional = service.findById(id);
+    Optional<UserDto> userOptional = service.findById(id);
     if(userOptional.isPresent()) {
-      return ResponseEntity.ok(userOptional.orElseThrow((null)));
+      return ResponseEntity.ok(userOptional.orElseThrow());
     }
     return ResponseEntity.notFound().build();
   };
@@ -64,8 +66,8 @@ public class UserController {
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<?> update(@Valid @RequestBody User user, Long id, BindingResult result) {
-    Optional<User> o = service.update(user, id);
+  public ResponseEntity<?> update(@Valid @RequestBody UserRequest user, Long id, BindingResult result) {
+    Optional<UserDto> o = service.update(user, id);
     if(o.isPresent()){
       return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
     }
@@ -74,7 +76,7 @@ public class UserController {
 
   @DeleteMapping("{id}")
   public ResponseEntity<?> remove(@PathVariable() Long id) {
-    Optional<User> o = service.findById(id);
+    Optional<UserDto> o = service.findById(id);
     if(o.isPresent()) {
       service.remove(id);
       return ResponseEntity.noContent().build();
